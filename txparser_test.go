@@ -58,11 +58,17 @@ func Test_Parser(t *testing.T) {
 	})
 
 	// Assert
-	if len(transactions) != 3 {
-		t.Errorf("transactions slice should have %d item(s), but has %d", 3, len(transactions))
+	if len(transactions) != 4 {
+		t.Errorf("transactions slice should have %d item(s), but has %d", 4, len(transactions))
 		t.FailNow()
 	}
 	if !areSlicesEqual([]txparser.Transaction{
+		{
+			BlockNumber: "0x2",
+			Hash:        "0xabc20",
+			From:        "0x123",
+			To:          "0x321",
+		},
 		{
 			BlockNumber: "0x3",
 			Hash:        "0xabc30",

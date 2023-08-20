@@ -6,6 +6,8 @@ Ethereum blockchain parser that will allow to query transactions for subscribed 
 
 ## Usage example
 
+More examples in [Examples directory](https://github.com/et-nik/ethereum-tx-parser/tree/develop/examples)
+
 ```go
 ctx := context.Background()
 

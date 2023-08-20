@@ -94,10 +94,10 @@ func (p *TXParser) GetTransactions(address string) []Transaction {
 	}
 
 	// TODO: Clarify whether transactions need to be deleted
-	err = p.transactionsStorage.DeleteTransactionsByAddress(p.ctx, address)
-	if err != nil {
-		log.Print(err)
-	}
+	// err = p.transactionsStorage.DeleteTransactionsByAddress(p.ctx, address)
+	// if err != nil {
+	//	log.Print(err)
+	// }
 
 	return transactions
 }

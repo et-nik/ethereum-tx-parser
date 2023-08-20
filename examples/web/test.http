@@ -1,0 +1,13 @@
+### Get transactions
+GET {{host}}/transactions
+
+### Subscribe to a new address
+POST {{host}}/subscribe
+Content-Type: application/json
+
+{
+    "address": "0x0d1d4e623D10F9FBA5Db95830F7d3839406C6AF2"
+}
+
+###
+GET {{host}}/currentBlock
