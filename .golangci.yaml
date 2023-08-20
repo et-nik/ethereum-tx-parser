@@ -1,0 +1,58 @@
+linters:
+  enable:
+    - asciicheck
+    - bodyclose
+    - depguard
+    - dogsled
+    - dupl
+    - errcheck
+    - exportloopref
+    - govet
+    - funlen
+    - gochecknoinits
+    - gocognit
+    - goconst
+    - gocritic
+    - gocyclo
+    - godot
+    - gofmt
+    - goimports
+    - gomodguard
+    - goprintffuncname
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - lll
+    - makezero
+    - misspell
+    - nakedret
+    - nestif
+    - noctx
+    - prealloc
+    - revive
+    - staticcheck
+    - stylecheck
+    - thelper
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - whitespace
+issues:
+  exclude-rules:
+    - path: test
+      linters:
+        - funlen
+        - lll
+        - dupl
+        - gosec
+        - scopelint
+    - path: internal/app/di
+      linters:
+        - govet
+    - path: internal/app/di/internal/definitions
+      linters:
+        - funlen
+        - revive
+        - stylecheck
