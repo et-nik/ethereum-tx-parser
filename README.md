@@ -41,4 +41,3 @@ for {
 
 * Implement transactional storage
 * Improve and wrap errors
-* 
