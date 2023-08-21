@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math/big"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -46,7 +47,11 @@ func (c *JSONRPCClient) CurrentBlockNumber(ctx context.Context) (int, error) {
 
 	switch v := r.Result.(type) {
 	case string:
-		return convertHexToNum(v)
+		bi, err := convertHexToNum(v)
+		if err != nil {
+			return 0, err
+		}
+		return int(bi.Int64()), nil
 	default:
 		return 0, errors.New("invalid response from api")
 	}
@@ -150,19 +155,18 @@ func (c *JSONRPCClient) doRequest(ctx context.Context, method string, params ...
 	return &r, nil
 }
 
-func convertHexToNum(s string) (int, error) {
+func convertHexToNum(s string) (*big.Int, error) {
 	if len(s) <= 2 {
-		return 0, errors.New("invalid hex length")
+		return nil, errors.New("invalid hex length")
 	}
 	if s[:2] != "0x" {
-		return 0, errors.New("invalid hex")
-	}
-	parsed, err := strconv.ParseInt(s[2:], 16, 64)
-	if err != nil {
-		return 0, err
+		return nil, errors.New("invalid hex")
 	}
 
-	return int(parsed), nil
+	bi := new(big.Int)
+	bi.SetString(s[2:], 16)
+
+	return bi, nil
 }
 
 func convertNumToHex(n int) string {

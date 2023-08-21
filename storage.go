@@ -3,6 +3,7 @@ package txparser
 import (
 	"context"
 	"errors"
+	"math/big"
 	"sync"
 	"sync/atomic"
 )
@@ -49,11 +50,11 @@ func (s *InmemorySubscriptionsStorage) IsAddressExists(_ context.Context, addres
 
 type InmemoryTransactionsStorage struct {
 	// Transactions hashes by address index
-	// map[string][]int
+	// map[string][]*big.Int
 	transactionsByAddress sync.Map
 
 	// Transactions by hash
-	// map[int]Transaction
+	// map[*big.Int]Transaction
 	transactions sync.Map
 
 	mu sync.Mutex
@@ -72,7 +73,7 @@ func (s *InmemoryTransactionsStorage) GetTransactionsByAddress(
 		return nil, nil
 	}
 
-	transactions, ok := v.([]int)
+	transactions, ok := v.([]*big.Int)
 	if !ok {
 		return nil, errors.New("invalid storage data")
 	}
@@ -102,7 +103,7 @@ func (s *InmemoryTransactionsStorage) SaveTransactions(
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	transactionHashes := make([]int, 0, len(newTransactions))
+	transactionHashes := make([]*big.Int, 0, len(newTransactions))
 
 	for _, tx := range newTransactions {
 		hash, err := convertHexToNum(tx.Hash)
@@ -119,7 +120,7 @@ func (s *InmemoryTransactionsStorage) SaveTransactions(
 		return nil
 	}
 
-	transactions, ok := v.([]int)
+	transactions, ok := v.([]*big.Int)
 	if !ok {
 		return errors.New("invalid storage data")
 	}
@@ -139,7 +140,7 @@ func (s *InmemoryTransactionsStorage) DeleteTransactionsByAddress(_ context.Cont
 		return nil
 	}
 
-	transactions, ok := v.([]int)
+	transactions, ok := v.([]*big.Int)
 	if !ok {
 		return errors.New("invalid storage data")
 	}

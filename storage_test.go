@@ -57,3 +57,35 @@ func Test_Storage_CuncurrentSave(t *testing.T) {
 		t.Errorf("transactions slice should have %d item(s), but has %d", 201, len(transactions))
 	}
 }
+
+func Test_Storage_BigInt(t *testing.T) {
+	ctx := context.Background()
+	storage := txparser.NewInmemoryTransactionsStorage()
+	err := storage.SaveTransactions(
+		ctx,
+		"0x85d995eba9763907fdf35cd2034144dd9d53ce32cbec21349d4b12823c6860c5",
+		[]txparser.Transaction{
+			{
+				Hash: "0x85d995eba9763907fdf35cd2034144dd9d53ce32cbec21349d4b12823c6860c6",
+			},
+		},
+	)
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+
+	transactions, err := storage.GetTransactionsByAddress(ctx, "0x85d995eba9763907fdf35cd2034144dd9d53ce32cbec21349d4b12823c6860c5")
+
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+	if len(transactions) != 1 {
+		t.Error("transactions slice should have 1 item(s), but has", len(transactions))
+		t.FailNow()
+	}
+	if transactions[0].Hash != "0x85d995eba9763907fdf35cd2034144dd9d53ce32cbec21349d4b12823c6860c6" {
+		t.Error("hashes should be equal")
+	}
+}
